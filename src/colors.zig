@@ -19,41 +19,11 @@ pub const Color = enum(u8) {
     Yellow = 0xE,
     White = 0xF,
 };
-
+// Глобальная переменная текущего цвета (Белый на Черном по умолчанию)
 pub var current_theme: u8 = 0x0F; // По умолчанию: Белый текст на черном
 
+/// Функция для создания байта атрибута (фон + текст)
 pub fn setTheme(text: Color, background: Color) void {
     current_theme = (@as(u8, @intFromEnum(background)) << 4) | @as(u8, @intFromEnum(text));
 }
 
-pub fn applyToChar(char: u8) u16 {
-    return (@as(u16, current_theme) << 8) | char;
-}
-fn processCommand(cmd: []const u8) void {
-    if (compareStrings(cmd, "color red")) {
-        // Устанавливаем: Красный текст (Red), Черный фон (Black)
-        clr.setTheme(clr.Color.Red, clr.Color.Black);
-        clearScreen(); // Очищаем экран, чтобы весь фон стал черным
-        printAt("Theme changed to Red!", 0, 0, clr.current_theme);
-    } 
-    else if (compareStrings(cmd, "color blue")) {
-        clr.setTheme(clr.Color.LightBlue, clr.Color.Black);
-        clearScreen();
-        printAt("Theme changed to Blue!", 0, 0, clr.current_theme);
-    }
-    // ... твои старые команды (help, exit)
-}
-
-if (compareStrings(cmd, "help")) {
-    printAt("Commands: help, clear, exit, neofetch, color [name]", cursor_y, 0, 0x0E);
-    cursor_y += 1;
-    printAt("Colors: red, blue, green, cyan, white, yellow", cursor_y, 0, 0x07);
-}
-
-fn printAt(message: []const u8, row: usize, col: usize, color: u8) void {
-    const offset = row * 80 + col;
-    // Используем переданный 'color' или 'clr.current_theme'
-    for (message, 0..) |char, i| {
-        VIDEO_ADDR[offset + i] = (@as(u16, color) << 8) | char;
-    }
-}
