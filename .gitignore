@@ -1,3 +1,26 @@
-.zig-cache/
+# --- AetherOS Build Artifacts ---
+# Игнорируем готовые бинарники и образы диска
+*.bin
+*.img
+*.iso
+AetherOS.img
+
+# Папки, которые создает компилятор Zig и наш скрипт сборки
+build/
+zig-cache/
 zig-out/
-*.o
+
+# --- System & Editor Files ---
+# Временные файлы macOS и Windows
+.DS_Store
+Thumbs.db
+
+# Конфигурации редакторов (VS Code, Sublime и др.)
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Логи эмулятора QEMU
+qemu-vga-log.txt
+*.log
